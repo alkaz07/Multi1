@@ -1,11 +1,33 @@
+import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         //  example2();
-        example3();
+        //example3();
+        example4();
 
+    }
+
+    private static void example4() {
+        int x=4, y=7;
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                imitateWork(x);         //вызываем описанный ниже статический метод
+            }
+        });
+        thread1.start();
+        Thread thread2 = new Thread(()->{  imitateWork(y); });      //лямбда выражение для краткости
+        thread2.start();
+        System.out.println("----- start ---------");
+        try {
+            thread1.join();
+            thread2.join();
+        }
+        catch (InterruptedException ex){}
+        System.out.println("+++++ finish ++++++++");
 
     }
 
@@ -54,6 +76,18 @@ public class Main {
         for (int i = 0; i < 7; i++) {
             sleep(500);
             System.out.println(i);
+        }
+    }
+
+    public static void imitateWork(int k)
+    {
+        for (int i = 0; i < k; i++) {
+            try {
+                sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(currentThread()+": "+i);
         }
     }
 }
