@@ -3,9 +3,27 @@ import static java.lang.Thread.sleep;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        example2();
+        //  example2();
+        example3();
 
 
+    }
+
+    private static void example3() {
+        SillyWorker w1 = new SillyWorker("Штирлиц", 7);
+        SillyWorker w2 = new SillyWorker("Бендер", 5);
+
+        Thread thread1 = new Thread(w1);
+        thread1.start();
+        Thread thread2 = new Thread(w2);
+        thread2.start();
+        System.out.println("----- start ---------");
+        try {
+            thread1.join();
+            thread2.join();
+        }
+        catch (InterruptedException ex){}
+        System.out.println("+++++ finish ++++++++");
     }
 
     private static void example2() {
